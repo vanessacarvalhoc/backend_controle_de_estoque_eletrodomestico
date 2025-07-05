@@ -1,0 +1,200 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Controle de Estoque",
+    "description": "API para gerenciar o estoque de produtos eletrodomésticos.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/buscar_produtos": {
+      "get": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Lista todos os produtos",
+        "responses": {
+          "200": {
+            "description": "Uma lista de produtos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Produto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/adicionar_produto": {
+      "post": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Adiciona um novo produto",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NovoProduto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produto criado com sucesso."
+          }
+        }
+      }
+    },
+    "/deletar_produto/{produto_id}": {
+      "delete": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Deleta um produto",
+        "parameters": [
+          {
+            "nome": "produtoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produto removido."
+          },
+          "404": {
+            "description": "Produto não encontrado."
+          }
+        }
+      }
+    },
+    "/vender_produto/{produto_id}/vender": {
+      "post": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Vende uma quantidade de um produto",
+        "parameters": [
+          {
+            "name": "produtoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quantidade": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Venda bem-sucedida."
+          },
+          "400": {
+            "description": "Estoque insuficiente ou quantidade inválida."
+          }
+        }
+      }
+    },
+    "/adicionar_estoque_produto/{produto_id}": {
+      "post": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Adiciona estoque a um produto",
+        "parameters": [
+          {
+            "name": "produtoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quantidade": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estoque atualizado."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Produto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "quantidade": {
+            "type": "integer"
+          },
+          "preco": {
+            "type": "number"
+          }
+        }
+      },
+      "NovoProduto": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "quantidade": {
+            "type": "integer"
+          },
+          "preco": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}
